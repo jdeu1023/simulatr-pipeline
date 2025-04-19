@@ -138,14 +138,10 @@ process collect_results {
     """
     Rscript -e "
     outputs_list <- list.files(pattern='*_results.rds') |> lapply(readRDS)
-    results <- lapply(outputs_list, function(output)(output\\\$results)) |> 
-        data.table::rbindlist() |>
-        dplyr::as_tibble()
     metrics <- lapply(outputs_list, function(output)(output\\\$metrics)) |> 
         data.table::rbindlist() |>
         dplyr::as_tibble()
-    final_output <- list(results = results, metrics = metrics)
-    saveRDS(final_output, '${params.result_file_name}')
+    saveRDS(metrics, '${params.result_file_name}')
     "
     """
 }
